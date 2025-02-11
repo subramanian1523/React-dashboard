@@ -6,7 +6,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(() => {
-    return JSON.parse(localStorage.getItem('toggle')) ?? true; // Read from localStorage initially
+    return JSON.parse(localStorage.getItem('toggle')) ?? false; // Read from localStorage initially
   });
 
   useEffect(() => {
