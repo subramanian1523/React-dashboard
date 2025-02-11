@@ -1,18 +1,33 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext(undefined);
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    return JSON.parse(localStorage.getItem('toggle')) ?? true; // Read from localStorage initially
+  });
+
+  useEffect(() => {
+    localStorage.setItem('toggle', JSON.stringify(isCollapsed));
+  }, [isCollapsed]); // Sync `isCollapsed` with localStorage on change
 
   const login = () => setIsAuthenticated(true);
   const logout = () => setIsAuthenticated(false);
-  
   const toggleTheme = () => setIsDarkTheme((prev) => !prev);
+  const toggleSidebar = () => setIsCollapsed((prev) => !prev); // Toggle sidebar state
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, isDarkTheme, toggleTheme }}>
+    <AuthContext.Provider value={{ 
+      isAuthenticated, 
+      login, 
+      logout, 
+      isDarkTheme, 
+      toggleTheme, 
+      isCollapsed, 
+      toggleSidebar 
+    }}>
       {children}
     </AuthContext.Provider>
   );

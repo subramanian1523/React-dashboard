@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FaBars,
   FaTimes,
@@ -16,16 +16,10 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { ConfirmModal } from "../components/Modal/ConfirmModal";
 
 export const SideMenu = () => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const [activeItem, setActiveItem] = useState("Dashboard");
-  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
-  const { logout, isDarkTheme } = useAuth();
-
   const navigate = useNavigate();
-
-  const toggleMenu = () => {
-    setIsCollapsed(!isCollapsed);
-  };
+  const { logout, isDarkTheme, isCollapsed, toggleSidebar } = useAuth();
+  const [activeItem, setActiveItem] = React.useState("Dashboard");
+  const [logoutModalOpen, setLogoutModalOpen] = React.useState(false);
 
   const handleLogout = () => {
     logout();
@@ -54,10 +48,9 @@ export const SideMenu = () => {
 
   return (
     <div
-      className={`flex flex-col ${
-        isDarkTheme ? "bg-black" : "bg-[#006D5B]"
-      } fixed h-[100%] md:h-[96vh] z-[99] text-white transition-all duration-300 
-      ${isCollapsed ? "w-20" : "w-100 md:w-64"} 
+      className={`flex flex-col ${isDarkTheme ? "bg-black" : "bg-[#006D5B]"}
+      fixed h-[100%] md:h-[96vh] z-[99] text-white transition-all duration-300 
+      ${isCollapsed ? "w-20" : "w-64"} 
       md:m-5 md:rounded-2xl md:shadow-lg`}
     >
       <div
@@ -69,15 +62,13 @@ export const SideMenu = () => {
       </div>
 
       <div className={`flex ${isCollapsed ? "justify-center" : "justify-end"}`}>
-        <Button onClick={toggleMenu} className="text-white border-none">
+        <Button onClick={toggleSidebar} className="text-white border-none">
           {isCollapsed ? <FaBars size={20} /> : <FaTimes size={20} />}
         </Button>
       </div>
 
-      <div
-        className={`px-4 py-2 ${isCollapsed && "text-center"} text-sm text-gray-200`}
-      >
-        Menu
+      <div className="px-4 py-2 text-sm text-gray-200">
+        {isCollapsed ? "" : "Menu"}
       </div>
 
       <nav className="flex-1">
@@ -86,14 +77,15 @@ export const SideMenu = () => {
             <li
               key={item.key}
               onClick={() => handleMenuClick(item)}
-              className="cursor-pointer" // Add cursor-pointer here
+              className="cursor-pointer"
             >
               <div
                 className={`relative flex ${
                   isCollapsed ? "justify-center" : "justify-start"
-                } gap-3 items-center p-3 rounded-lg transition-colors ${
-                  activeItem === item.key ? "text-white" : "text-gray-300"
-                } hover:bg-gray-700`}
+                }
+                gap-3 items-center p-3 rounded-lg transition-colors 
+                ${activeItem === item.key ? "text-white" : "text-gray-300"}
+                hover:bg-gray-700`}
               >
                 {activeItem === item.key && (
                   <div className="absolute left-0 top-0 h-full w-1 bg-yellow-400 rounded"></div>
@@ -103,17 +95,10 @@ export const SideMenu = () => {
               </div>
             </li>
           ))}
-
           <hr className="border-gray-200 mx-4 my-4" />
-          <div
-            className={`px-4 py-2 ${isCollapsed && "text-center"} text-sm text-gray-200`}
-          >
-            Others
-          </div>
-
           <li
             onClick={() => setLogoutModalOpen(true)}
-            className="cursor-pointer" // Add cursor-pointer here
+            className="cursor-pointer"
           >
             <div
               className={`relative flex ${
@@ -132,7 +117,7 @@ export const SideMenu = () => {
 
           <li
             onClick={() => setActiveItem("Settings")}
-            className="cursor-pointer" // Add cursor-pointer here
+            className="cursor-pointer"
           >
             <div
               className={`relative flex ${

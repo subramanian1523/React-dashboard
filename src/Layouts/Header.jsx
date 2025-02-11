@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 import { ConfirmModal } from "../components/Modal/ConfirmModal";
 
 export const Header = () => {
-  const { toggleTheme, isDarkTheme, isAuthenticated } = useAuth();
+  const { toggleTheme, isDarkTheme, isAuthenticated,isCollapsed } = useAuth();
   const location = useLocation();
   const userName = localStorage.getItem("username") || "User Name";
   
@@ -39,7 +39,7 @@ export const Header = () => {
   return (
     <header
       className={`sticky top-0 z-50 flex justify-between items-center pl-[5px] pt-[5px] md:pt-[25px] md:pb-[20px] pr-[5px] md:pr-[90px] ${
-        isAuthenticated && "ml-[100px]"
+        !isAuthenticated  ? 'ml-[0px]' : isCollapsed ? "ml-[100px]" : "ml-[280px]"} 
       } ${isDarkTheme ? "bg-black text-white" : "bg-[#FFFFF0] text-gray-800"}`}
     >
       <div className="flex items-center text-lg font-semibold">
